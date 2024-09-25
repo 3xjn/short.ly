@@ -1,0 +1,34 @@
+[
+  {
+    "ContainingType": "Shortly_API.Controllers.CodeMapsController",
+    "Method": "CreateCodeMap",
+    "RelativePath": "create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "link",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Shortly_API.Controllers.CodeMapsController",
+    "Method": "RedirectCodeMap",
+    "RelativePath": "redirect/{code}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

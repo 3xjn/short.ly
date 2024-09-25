@@ -1,0 +1,71 @@
+{
+  "ContentRoots": [
+    "/app/wwwroot/"
+  ],
+  "Root": {
+    "Children": {
+      "app": {
+        "Children": {
+          "index.css": {
+            "Children": null,
+            "Asset": {
+              "ContentRootIndex": 0,
+              "SubPath": "app/index.css"
+            },
+            "Patterns": null
+          },
+          "index.html": {
+            "Children": null,
+            "Asset": {
+              "ContentRootIndex": 0,
+              "SubPath": "app/index.html"
+            },
+            "Patterns": null
+          },
+          "index.js": {
+            "Children": null,
+            "Asset": {
+              "ContentRootIndex": 0,
+              "SubPath": "app/index.js"
+            },
+            "Patterns": null
+          },
+          "index.js.map": {
+            "Children": null,
+            "Asset": {
+              "ContentRootIndex": 0,
+              "SubPath": "app/index.js.map"
+            },
+            "Patterns": null
+          },
+          "vite.svg": {
+            "Children": null,
+            "Asset": {
+              "ContentRootIndex": 0,
+              "SubPath": "app/vite.svg"
+            },
+            "Patterns": null
+          }
+        },
+        "Asset": null,
+        "Patterns": null
+      },
+      "favicon.ico": {
+        "Children": null,
+        "Asset": {
+          "ContentRootIndex": 0,
+          "SubPath": "favicon.ico"
+        },
+        "Patterns": null
+      }
+    },
+    "Asset": null,
+    "Patterns": [
+      {
+        "ContentRootIndex": 0,
+        "Pattern": "**",
+        "Depth": 0
+      }
+    ]
+  }
+}

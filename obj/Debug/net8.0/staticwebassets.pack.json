@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\asher\\source\\repos\\Shortly API\\Shortly API\\wwwroot\\app\\index.css",
+      "PackagePath": "staticwebassets\\app\\index.css"
+    },
+    {
+      "Id": "C:\\Users\\asher\\source\\repos\\Shortly API\\Shortly API\\wwwroot\\app\\index.html",
+      "PackagePath": "staticwebassets\\app\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\asher\\source\\repos\\Shortly API\\Shortly API\\wwwroot\\app\\index.js",
+      "PackagePath": "staticwebassets\\app\\index.js"
+    },
+    {
+      "Id": "C:\\Users\\asher\\source\\repos\\Shortly API\\Shortly API\\wwwroot\\app\\index.js.map",
+      "PackagePath": "staticwebassets\\app\\index.js.map"
+    },
+    {
+      "Id": "C:\\Users\\asher\\source\\repos\\Shortly API\\Shortly API\\wwwroot\\app\\vite.svg",
+      "PackagePath": "staticwebassets\\app\\vite.svg"
+    },
+    {
+      "Id": "C:\\Users\\asher\\source\\repos\\Shortly API\\Shortly API\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Shortly API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Shortly API.props",
+      "PackagePath": "build\\Shortly API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Shortly API.props",
+      "PackagePath": "buildMultiTargeting\\Shortly API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Shortly API.props",
+      "PackagePath": "buildTransitive\\Shortly API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
