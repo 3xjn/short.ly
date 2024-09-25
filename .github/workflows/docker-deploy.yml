@@ -37,6 +37,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
 
+      - name: Create home directory on Droplet
+        env:
+          HOST: ${{ secrets.DROPLET_IP }}
+          USERNAME: ${{ secrets.DROPLET_USERNAME }}
+        run: |
+          ssh -i ~/.ssh/id_rsa ${USERNAME}@${HOST} "mkdir -p /home/${USERNAME}"
+
       - name: Transfer Docker image to DigitalOcean droplet
         env:
           HOST: ${{ secrets.DROPLET_IP }}
