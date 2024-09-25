@@ -42,7 +42,7 @@ jobs:
           HOST: ${{ secrets.DROPLET_IP }}
           USERNAME: ${{ secrets.DROPLET_USERNAME }}
         run: |
-          scp -i ~/.ssh/id_rsa image.tar ${USERNAME}@${HOST}:/home/${USERNAME}/
+          scp -i ~/.ssh/id_rsa image.tar ${USERNAME}@${HOST}:/home/${USERNAME}/image.tar
 
       - name: SSH into Droplet and Load Docker Image
         env:
