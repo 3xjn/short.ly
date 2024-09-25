@@ -16,13 +16,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Set up Docker Image Tag
+        run: echo "IMAGE_TAG=shortly:latest" >> $GITHUB_ENV
+
       - name: Build Docker image
         run: |
-          docker build -t shortly:$(date +%s) .
+          docker build -t $IMAGE_TAG .
 
       - name: Save Docker image to a tar file
         run: |
-          docker save shortly:$(date +%s) -o shortly.tar
+          docker save $IMAGE_TAG -o my-image-name.tar
 
       - name: Transfer Docker image to DigitalOcean droplet
         env:
@@ -30,7 +33,7 @@ jobs:
           USERNAME: ${{ secrets.DROPLET_USERNAME }}
           SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
         run: |
-          scp -i "${SSH_KEY}" shortly.tar "${USERNAME}@${HOST}:/home/${USERNAME}/"
+          scp -i "${SSH_KEY}" my-image-name.tar "${USERNAME}@${HOST}:/home/${USERNAME}/"
 
       - name: SSH into Droplet and Load Docker Image
         env:
@@ -39,6 +42,6 @@ jobs:
           SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
         run: |
           ssh -i "${SSH_KEY}" "${USERNAME}@${HOST}" << 'EOF'
-          docker load -i /home/${USERNAME}/shortly.tar
-          docker run -d -p 8080:8080 shortly:latest
+          sudo docker load -i /home/${USERNAME}/my-image-name.tar
+          sudo docker run -d -p 8080:8080 my-image-name:latest
           EOF
