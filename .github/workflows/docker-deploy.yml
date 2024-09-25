@@ -1,0 +1,44 @@
+name: Build and Push Docker Image to DigitalOcean Droplet
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t shortly:$(date +%s) .
+
+      - name: Save Docker image to a tar file
+        run: |
+          docker save shortly:$(date +%s) -o shortly.tar
+
+      - name: Transfer Docker image to DigitalOcean droplet
+        env:
+          HOST: ${{ secrets.DROPLET_IP }}
+          USERNAME: ${{ secrets.DROPLET_USERNAME }}
+          SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
+        run: |
+          scp -i "${SSH_KEY}" shortly.tar "${USERNAME}@${HOST}:/home/${USERNAME}/"
+
+      - name: SSH into Droplet and Load Docker Image
+        env:
+          HOST: ${{ secrets.DROPLET_IP }}
+          USERNAME: ${{ secrets.DROPLET_USERNAME }}
+          SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
+        run: |
+          ssh -i "${SSH_KEY}" "${USERNAME}@${HOST}" << 'EOF'
+          docker load -i /home/${USERNAME}/shortly.tar
+          docker run -d -p 8080:8080 shortly:latest
+          EOF
