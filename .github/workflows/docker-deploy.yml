@@ -27,21 +27,32 @@ jobs:
         run: |
           docker save $IMAGE_TAG -o my-image-name.tar
 
+      - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DROPLET_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+
       - name: Transfer Docker image to DigitalOcean droplet
         env:
           HOST: ${{ secrets.DROPLET_IP }}
           USERNAME: ${{ secrets.DROPLET_USERNAME }}
-          SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
         run: |
-          scp -i "${SSH_KEY}" my-image-name.tar "${USERNAME}@${HOST}:/home/${USERNAME}/"
+          scp -i ~/.ssh/id_rsa image.tar ${USERNAME}@${HOST}:/home/${USERNAME}/
 
       - name: SSH into Droplet and Load Docker Image
         env:
           HOST: ${{ secrets.DROPLET_IP }}
           USERNAME: ${{ secrets.DROPLET_USERNAME }}
-          SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
         run: |
-          ssh -i "${SSH_KEY}" "${USERNAME}@${HOST}" << 'EOF'
-          sudo docker load -i /home/${USERNAME}/my-image-name.tar
-          sudo docker run -d -p 8080:8080 my-image-name:latest
+          ssh -i ~/.ssh/id_rsa ${USERNAME}@${HOST} << EOF
+            sudo docker load -i /home/${USERNAME}/image.tar
+            sudo docker stop my-container || true
+            sudo docker rm my-container || true
+            sudo docker run -d --name my-container -p 8080:8080 ${{ env.IMAGE_TAG }}
+            rm /home/${USERNAME}/image.tar
           EOF
