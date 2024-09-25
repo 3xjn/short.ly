@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -17,15 +16,16 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Set up Docker Image Tag
-        run: echo "IMAGE_TAG=shortly:latest" >> $GITHUB_ENV
+        run: |
+          echo "IMAGE_TAG=my-image-name:$(date +%s)" >> $GITHUB_ENV
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE_TAG .
+          docker build -t ${{ env.IMAGE_TAG }} .
 
       - name: Save Docker image to a tar file
         run: |
-          docker save $IMAGE_TAG -o my-image-name.tar
+          docker save ${{ env.IMAGE_TAG }} -o image.tar
 
       - name: Setup SSH
         env:
