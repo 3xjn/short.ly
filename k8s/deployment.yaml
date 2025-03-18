@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shortly
+  labels:
+    app: shortly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shortly
+  template:
+    metadata:
+      labels:
+        app: shortly
+    spec:
+      imagePullSecrets:
+        - name: ghcr-auth
+      containers:
+        - name: shortly
+          image: '${REGISTRY_URL}/shortly:${IMAGE_TAG}'
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m
+          ports:
+            - containerPort: 8080

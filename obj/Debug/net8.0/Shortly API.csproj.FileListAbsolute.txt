@@ -229,3 +229,4 @@ C:\Users\asher\source\repos\Shortly API\Shortly API\bin\Debug\net8.0\runtimes\wi
 C:\Users\asher\source\repos\Shortly API\Shortly API\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\asher\source\repos\Shortly API\Shortly API\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\Users\asher\source\repos\Shortly API\Shortly API\bin\Debug\net8.0\Shortly API.staticwebassets.runtime.json
+C:\Users\asher\source\repos\Shortly API\Shortly API\obj\Debug\net8.0\Shortly API.sourcelink.json

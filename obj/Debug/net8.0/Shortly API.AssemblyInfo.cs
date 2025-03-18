@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Shortly API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5f7b387051114a83da78c4f32ed9601171e6109")]
 [assembly: System.Reflection.AssemblyProductAttribute("Shortly API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Shortly API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
