@@ -1,0 +1,55 @@
+name: Build and Push Docker Image to DigitalOcean Droplet
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up Docker Image Tag
+        run: |
+          echo "IMAGE_TAG=shortly:$(date +%s)" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.IMAGE_TAG }} .
+
+      - name: Save Docker image to a tar file
+        run: |
+          docker save ${{ env.IMAGE_TAG }} -o image.tar
+
+      - name: Install SSH Key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DROPLET_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.DROPLET_IP }} >> ~/.ssh/known_hosts
+
+      - name: Transfer Docker image to DigitalOcean droplet
+        env:
+          HOST: ${{ secrets.DROPLET_IP }}
+          USERNAME: ${{ secrets.DROPLET_USERNAME }}
+        run: |
+          scp image.tar ${USERNAME}@${HOST}:/home/${USERNAME}/
+
+      - name: SSH into Droplet and Load Docker Image
+        env:
+          HOST: ${{ secrets.DROPLET_IP }}
+          USERNAME: ${{ secrets.DROPLET_USERNAME }}
+        run: |
+          ssh ${USERNAME}@${HOST} << EOF
+            sudo docker load -i /home/${USERNAME}/image.tar
+            sudo docker stop my-container || true
+            sudo docker rm my-container || true
+            sudo docker run -d --name my-container -p 8080:8080 ${{ env.IMAGE_TAG }}
+            rm /home/${USERNAME}/image.tar
+          EOF

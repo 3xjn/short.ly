@@ -1,0 +1,65 @@
+name: Build and Push Docker Image to DigitalOcean Droplet
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up Docker Image Tag
+        run: |
+          echo "IMAGE_TAG=my-image-name:$(date +%s)" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.IMAGE_TAG }} .
+
+      - name: Save Docker image to a tar file
+        run: |
+          docker save ${{ env.IMAGE_TAG }} -o image.tar
+
+      - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DROPLET_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Create home directory on Droplet
+        env:
+          HOST: ${{ secrets.DROPLET_IP }}
+          USERNAME: ${{ secrets.DROPLET_USERNAME }}
+        run: |
+          ssh -i ~/.ssh/id_rsa ${USERNAME}@${HOST} "mkdir -p /home/${USERNAME}"
+
+      - name: Transfer Docker image to DigitalOcean droplet
+        env:
+          HOST: ${{ secrets.DROPLET_IP }}
+          USERNAME: ${{ secrets.DROPLET_USERNAME }}
+        run: |
+          scp -i ~/.ssh/id_rsa image.tar ${USERNAME}@${HOST}:/home/${USERNAME}/image.tar
+
+      - name: SSH into Droplet and Load Docker Image
+        env:
+          HOST: ${{ secrets.DROPLET_IP }}
+          USERNAME: ${{ secrets.DROPLET_USERNAME }}
+        run: |
+          ssh -i ~/.ssh/id_rsa ${USERNAME}@${HOST} << EOF
+            sudo docker load -i /home/${USERNAME}/image.tar
+            sudo docker stop my-container || true
+            sudo docker rm my-container || true
+            sudo docker run -d --name my-container -p 8080:8080 ${{ env.IMAGE_TAG }}
+            rm /home/${USERNAME}/image.tar
+          EOF
