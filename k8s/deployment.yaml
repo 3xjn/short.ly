@@ -18,7 +18,7 @@ spec:
         - name: ghcr-auth
       containers:
         - name: shortly
-          image: '${REGISTRY_URL}/shortly:${IMAGE_TAG}'
+          image: '${REGISTRY_URL}:${IMAGE_TAG}'
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
