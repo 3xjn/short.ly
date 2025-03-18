@@ -18,7 +18,7 @@ metadata:
 spec:
   ingressClassName: public
   rules:
-  - host: share.3xjn.dev
+  - host: shortly.3xjn.dev
     http:
       paths:
       - pathType: Prefix
@@ -30,5 +30,5 @@ spec:
               number: 8080
   tls:
   - hosts:
-    - share.3xjn.dev
+    - shortly.3xjn.dev
     secretName: shortly-tls-cert
