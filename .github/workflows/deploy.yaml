@@ -52,7 +52,7 @@ jobs:
                   kubectl get nodes
             - name: Update image in deployment manifest
               run: |
-                  export REGISTRY_URL=ghcr.io/${{ github.repository_owner }}
+                  export REGISTRY_URL=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
                   export IMAGE_TAG=${{ github.sha }}
 
                   # Replace variables in all Kubernetes files
